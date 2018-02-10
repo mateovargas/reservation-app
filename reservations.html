@@ -19,13 +19,13 @@
                 Current Reservations and Waiting List
             </h3>
             <div class="text-center">
-                <a href="#">
+                <a href="/add">
                     <button type="button" class="btn btn-danger btn-lg">
                         <span class="glyphicon glyphicon-credit-card"></span>
                         Make Reservation
                     </button>
                 </a>
-                <a href="#">
+                <a href="/">
                     <button type="button" class="btn btn-danger btn-lg">
                         <span class="glyphicon glyphicon-home"></span>
                     </button>
@@ -55,11 +55,41 @@
                 <p>
                     <a href="#" id="clear">Clear Table</a>
                     |
-                    <a href="#">API Table Link</a>
+                    <a href="/api/reservations">API Table Link</a>
                     |
-                    <a href="#">API Wait List</a>
+                    <a href="/api/waitList">API Wait List</a>
                 </p>
             </div>
         </footer>
+        <script type="text/javascript">
+
+            function queryReservations(){
+
+                $.ajax(
+                    {
+                        url: '/api/reservations',
+                        method: "GET"
+                    }).done(function(data){
+                        
+                        for(var i = 0; i < data.length; i++){
+
+                            console.log(data[i]);
+                            var reservationDiv = $('<div>');
+                            reservationDiv.addClass('well');
+                            reservationDiv.attr('id', 'table-well-' + (i+1));
+                            $('#current-reservations').append(reservationDiv);
+                            
+
+                        }
+
+                    });
+            }
+
+            function queryWaitList(){
+
+            }
+
+            queryReservations();
+        </script>
     </div>
 </body>
