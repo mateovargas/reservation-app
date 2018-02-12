@@ -12,6 +12,7 @@
     <div class="container">
         <div class="jumbotron">
             <h1 class="text-center">
+                <span class="glyphicon glyphicon-fire"></span>
                 Hot Restaurant
             </h1>
             <hr>
@@ -20,7 +21,7 @@
             </h3>
             <div class="text-center">
                 <a href="/add">
-                    <button type="button" class="btn btn-danger btn-lg">
+                    <button type="button" class="btn btn-primary btn-lg">
                         <span class="glyphicon glyphicon-credit-card"></span>
                         Make Reservation
                     </button>
@@ -70,14 +71,18 @@
                         url: '/api/reservations',
                         method: "GET"
                     }).done(function(data){
-                        
+                        console.log(data);
                         for(var i = 0; i < data.length; i++){
 
                             console.log(data[i]);
                             var reservationDiv = $('<div>');
                             reservationDiv.addClass('well');
-                            reservationDiv.attr('id', 'table-well-' + (i+1));
+                            reservationDiv.attr('id', 'tableWell-' + (i+1));
                             $('#current-reservations').append(reservationDiv);
+
+                            var tableNumber = i + 1;
+
+                            $('#tableWell-' + (i+1)).append("<h2><span class='label label-primary'>" + tableNumber.toString() + "</span> | " + data[i].name + "</h2>");
                             
 
                         }
@@ -86,10 +91,46 @@
             }
 
             function queryWaitList(){
+                $.ajax(
+                    {
+                        url: '/api/waitList',
+                        method: "GET"
+                    }).done(function (data) {
+                        console.log(data);
+                        for (var i = 0; i < data.length; i++) {
 
+                            console.log(data[i]);
+                            var waitListDiv = $('<div>');
+                            waitListDiv.addClass('well');
+                            waitListDiv.attr('id', 'waitListWell-' + (i + 1));
+                            $('#wait-list').append(waitListDiv);
+
+                            var tableNumber = i + 1;
+
+                            $('#waitListWell-' + (i + 1)).append("<h2><span class='label label-primary'>" + tableNumber.toString() + "</span> | " + data[i].name + "</h2>");
+
+
+                        }
+
+                    });
             }
 
+
+            function clearTable(){
+
+                $.ajax({url: "/api/clear", method: "POST"})
+            }
+
+            $('#clear').on('click', function(){
+                alert('Clearing...');
+                clearTable();
+                location.reload();
+            })
+
             queryReservations();
+            queryWaitList();
+
+
         </script>
     </div>
 </body>

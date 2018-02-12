@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 // =============================================================
 var reservations = [];
 var waitList = [];
+var historicalList = [];
 // Routes
 // =============================================================
 // Basic route that sends the user first to the AJAX Page
@@ -35,6 +36,10 @@ app.get("/api/reservations", function (req, res) {
 app.get("/api/waitList", function(req, res){
     res.json(waitList);
 });
+
+app.get("/api/clear", function(req, res){
+    res.json();
+});
 // Create Reservations
 app.post("/api/reservations", function (req, res) {
     // req.body hosts is equal to the JSON post sent from the user
@@ -54,6 +59,24 @@ app.post("/api/reservations", function (req, res) {
         reservations.push(newReservation);
     }
     res.json(newReservation);
+});
+
+app.post("/api/clear", function(req, res){
+
+    historicalList = [...reservations];
+
+    reservations = [];
+
+    for(var i = 0; i < 5; i++){
+        
+        if(waitList[0] !== undefined){
+            reservations.push(waitList[0]);
+            waitList.splice(0, 1);
+        }
+
+    }
+
+    res.json(historicalList);
 });
 
 

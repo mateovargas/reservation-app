@@ -6,6 +6,7 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "parth": "^4.2.3",
     "path": "^0.12.7"
   },
   "devDependencies": {},
