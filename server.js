@@ -12,9 +12,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // RESERVATIONS (DATA)
 // =============================================================
-var reservations = [];
-var waitList = [];
-var historicalList = [];
+var reservations = []; //stores our current tables
+var waitList = []; //stores the waiting list
+var historicalList = []; //stores our history of tables.
 // Routes
 // =============================================================
 // Basic route that sends the user first to the AJAX Page
@@ -32,13 +32,13 @@ app.get("/reservations", function (req, res) {
 app.get("/api/reservations", function (req, res) {
     res.json(reservations);
 });
-
+//searches for the waitlist, provides JSON.
 app.get("/api/waitList", function(req, res){
     res.json(waitList);
 });
-
+//searches for the historical data, provides JSON.
 app.get("/api/clear", function(req, res){
-    res.json();
+    res.json(historicalList);
 });
 // Create Reservations
 app.post("/api/reservations", function (req, res) {
@@ -61,6 +61,10 @@ app.post("/api/reservations", function (req, res) {
     res.json(newReservation);
 });
 
+//Post method to clear the 5 current tables.
+//Pushes the people on the waiting list to reservations
+//and then deletes them off waitList.
+//Stores our previous reservations into the historicalList.
 app.post("/api/clear", function(req, res){
 
     historicalList = [...reservations];
